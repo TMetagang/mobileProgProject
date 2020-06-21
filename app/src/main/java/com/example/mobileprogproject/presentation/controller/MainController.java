@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.example.mobileprogproject.Constants;
+import com.example.mobileprogproject.Injection;
 import com.example.mobileprogproject.data.TVApi;
 import com.example.mobileprogproject.presentation.model.MPTv;
 import com.example.mobileprogproject.presentation.model.RestMPTvResponse;
@@ -47,13 +48,8 @@ public class MainController {
 
     private void makeApiCall()
     {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        TVApi TvApi = retrofit.create(TVApi.class);
 
-        Call<RestMPTvResponse> call = TvApi.getMPTVResponse();
+        Call<RestMPTvResponse> call = Injection.getTVApi().getMPTVResponse();
         call.enqueue(new Callback<RestMPTvResponse>() {
             @Override
             public void onResponse(Call<RestMPTvResponse> call, Response<RestMPTvResponse> response) {

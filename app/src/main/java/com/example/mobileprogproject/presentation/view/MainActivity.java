@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.mobileprogproject.Constants;
 
+import com.example.mobileprogproject.Injection;
 import com.example.mobileprogproject.presentation.controller.MainController;
 import com.example.mobileprogproject.presentation.view.ListAdapter;
 import com.example.mobileprogproject.presentation.model.MPTv;
@@ -48,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         controller = new MainController(
                 this,
-                 new GsonBuilder()
-                        .setLenient()
-                        .create(),
+                Injection.getGson(),
                  getSharedPreferences(Constants.App_Name, Context.MODE_PRIVATE)
 
         );
