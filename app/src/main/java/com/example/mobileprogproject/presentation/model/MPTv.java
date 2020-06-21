@@ -1,4 +1,5 @@
-package com.example.mobileprogproject;
+package com.example.mobileprogproject.presentation.model;
+
 
 public class MPTv {
 
@@ -13,14 +14,6 @@ public class MPTv {
     private String imDbRating;
     private String imDbRatingCount;
 
-    public String getId() {
-        return id;
-    }
-
-    public String getRank() {
-        return rank;
-    }
-
     public MPTv(String id, String rank, String rankUpDown, String title, String fullTitle, String year, String image, String crew, String imDbRating, String imDbRatingCount) {
         this.id = id;
         this.rank = rank;
@@ -32,6 +25,15 @@ public class MPTv {
         this.crew = crew;
         this.imDbRating = imDbRating;
         this.imDbRatingCount = imDbRatingCount;
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public String getRank() {
+        return rank;
     }
 
     public String getRankUpDown() {
@@ -67,3 +69,4 @@ public class MPTv {
     }
 
 }
+

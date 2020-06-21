@@ -1,4 +1,4 @@
-package com.example.mobileprogproject;
+package com.example.mobileprogproject.presentation.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,12 +9,22 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.mobileprogproject.Constants;
+//import com.example.mobileprogproject.presentation.view.ListAdapter;
+//import com.example.mobileprogproject.R;
+import com.example.mobileprogproject.presentation.view.ListAdapter;
+import com.example.mobileprogproject.presentation.model.MPTv;
+import com.example.mobileprogproject.R;
+//import com.example.mobileprogproject.presentation.TVApi;
+//import com.example.mobileprogproject.presentation.model.MPTv;
+//import com.example.mobileprogproject.presentation.model.RestMPTvResponse;
+import com.example.mobileprogproject.presentation.model.RestMPTvResponse;
+import com.example.mobileprogproject.data.TVApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -41,13 +51,16 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(Constants.App_Name, Context.MODE_PRIVATE);
 
 
-        Gson gson = new GsonBuilder()
+        gson = new GsonBuilder()
                 .setLenient()
                 .create();
 
         List<MPTv> listTV = getDataFromCache();
         if(listTV != null){
             showList(listTV);
+            Toast.makeText(getApplicationContext(), "cacheData", Toast.LENGTH_SHORT).show();
+
+
         }else{
             makeApiCall();
         }
@@ -100,10 +113,11 @@ public class MainActivity extends AppCompatActivity {
            public void onResponse(Call<RestMPTvResponse> call, Response<RestMPTvResponse> response) {
                if(response.isSuccessful() && response.body() != null){
 
-                   List<MPTv> listTv = response.body().results;
+                   List<MPTv> listTv = response.body().items;
                    saveList(listTv);
                    Toast.makeText(getApplicationContext(), "API Success", Toast.LENGTH_SHORT).show();
                     showList(listTv);
+
                }else{
                    //showError();
                    Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
