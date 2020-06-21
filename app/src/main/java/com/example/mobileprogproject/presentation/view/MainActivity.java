@@ -10,14 +10,12 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.mobileprogproject.Constants;
-//import com.example.mobileprogproject.presentation.view.ListAdapter;
-//import com.example.mobileprogproject.R;
+
+import com.example.mobileprogproject.presentation.controller.MainController;
 import com.example.mobileprogproject.presentation.view.ListAdapter;
 import com.example.mobileprogproject.presentation.model.MPTv;
 import com.example.mobileprogproject.R;
-//import com.example.mobileprogproject.presentation.TVApi;
-//import com.example.mobileprogproject.presentation.model.MPTv;
-//import com.example.mobileprogproject.presentation.model.RestMPTvResponse;
+
 import com.example.mobileprogproject.presentation.model.RestMPTvResponse;
 import com.example.mobileprogproject.data.TVApi;
 import com.google.gson.Gson;
@@ -38,53 +36,34 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ListAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private SharedPreferences sharedPreferences;
-    private Gson gson;
 
-    private static final String BASE_URL = "https://imdb-api.com/";
+    private MainController controller;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPreferences = getSharedPreferences(Constants.App_Name, Context.MODE_PRIVATE);
+        controller = new MainController(
+                this,
+                 new GsonBuilder()
+                        .setLenient()
+                        .create(),
+                 getSharedPreferences(Constants.App_Name, Context.MODE_PRIVATE)
+
+        );
+        controller.onStart();
 
 
-        gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        List<MPTv> listTV = getDataFromCache();
-        if(listTV != null){
-            showList(listTV);
-            Toast.makeText(getApplicationContext(), "cacheData", Toast.LENGTH_SHORT).show();
-
-
-        }else{
-            makeApiCall();
-        }
 
 
 
 
     }
 
-    private List<MPTv> getDataFromCache() {
-
-        String jsonTV = sharedPreferences.getString(Constants.KEY_TV_LIST, null);
-        if(jsonTV == null){
-            return null;
-        }else{
-
-            Type listType = new TypeToken<List<MPTv>>(){}.getType();
-            return gson.fromJson(jsonTV, listType);
-        }
-
-    }
-
-
-    private void showList(List<MPTv> TvList){
+    public void showList(List<MPTv> TvList){
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -96,53 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void makeApiCall()
-
-    {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        TVApi TvApi = retrofit.create(TVApi.class);
-
-        Call<RestMPTvResponse> call = TvApi.getMPTVResponse();
-       call.enqueue(new Callback<RestMPTvResponse>() {
-           @Override
-           public void onResponse(Call<RestMPTvResponse> call, Response<RestMPTvResponse> response) {
-               if(response.isSuccessful() && response.body() != null){
-
-                   List<MPTv> listTv = response.body().items;
-                   saveList(listTv);
-                   Toast.makeText(getApplicationContext(), "API Success", Toast.LENGTH_SHORT).show();
-                    showList(listTv);
-
-               }else{
-                   //showError();
-                   Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
-
-               }
-           }
-
-           @Override
-           public void onFailure(Call<RestMPTvResponse> call, Throwable t) {
-                showError();
-           }
-       });
-
-    }
-
-    private void saveList(List<MPTv> listTv) {
-        String jsonString = gson.toJson(listTv);
-        sharedPreferences
-                .edit()
-                .putString(Constants.KEY_TV_LIST, jsonString)
-                .apply();
-    }
-
-
-    private void showError(){
+    public void showError(){
 
         Toast.makeText(getApplicationContext(), "API Error", Toast.LENGTH_SHORT).show();
 
