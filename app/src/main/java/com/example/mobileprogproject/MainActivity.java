@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ListAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
 
     private static final String BASE_URL = "https://imdb-api.com/";
 
@@ -32,10 +38,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        makeApiCall();
+        sharedPreferences = getSharedPreferences(Constants.App_Name, Context.MODE_PRIVATE);
+
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        List<MPTv> listTV = getDataFromCache();
+        if(listTV != null){
+            showList(listTV);
+        }else{
+            makeApiCall();
+        }
+
+
 
 
     }
+
+    private List<MPTv> getDataFromCache() {
+
+        String jsonTV = sharedPreferences.getString(Constants.KEY_TV_LIST, null);
+        if(jsonTV == null){
+            return null;
+        }else{
+
+            Type listType = new TypeToken<List<MPTv>>(){}.getType();
+            return gson.fromJson(jsonTV, listType);
+        }
+
+    }
+
 
     private void showList(List<MPTv> TvList){
 
@@ -53,10 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
     {
 
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -71,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                if(response.isSuccessful() && response.body() != null){
 
                    List<MPTv> listTv = response.body().results;
+                   saveList(listTv);
                    Toast.makeText(getApplicationContext(), "API Success", Toast.LENGTH_SHORT).show();
                     showList(listTv);
                }else{
@@ -86,6 +117,14 @@ public class MainActivity extends AppCompatActivity {
            }
        });
 
+    }
+
+    private void saveList(List<MPTv> listTv) {
+        String jsonString = gson.toJson(listTv);
+        sharedPreferences
+                .edit()
+                .putString(Constants.KEY_TV_LIST, jsonString)
+                .apply();
     }
 
 
