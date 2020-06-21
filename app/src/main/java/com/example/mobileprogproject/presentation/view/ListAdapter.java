@@ -18,7 +18,13 @@ import com.example.mobileprogproject.R;
 //import com.example.mobileprogproject.presentation.model.MPTv;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-    private List<MPTv> values;
+
+    private final List<MPTv> values;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(MPTv item);
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -45,11 +51,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListAdapter(List<MPTv> myDataset) {
-        values = myDataset;
+    public ListAdapter(List<MPTv> myDataset, OnItemClickListener listener) {
+        this.values = myDataset;
+        this.listener = listener;
     }
 
-    // Create new views (invoked by the layout manager)
+    public void setListener(OnItemClickListener listener){
+        this.listener = listener;
+
+    }
+
+
     @Override
     public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
@@ -78,6 +90,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         });*/
 
         holder.txtFooter.setText(currentTV.getYear());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override public void onClick(View v){
+                listener.onItemClick(currentTV);
+            }
+
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)

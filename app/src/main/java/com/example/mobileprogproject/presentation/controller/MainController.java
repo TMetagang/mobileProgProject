@@ -92,7 +92,9 @@ public class MainController {
 
 
 
-    public void onItemClick(MPTv tv){}
+    public void onItemClick(MPTv tv){
+        view.navigateToDetails(tv);
+    }
 
     public void onButtonAClick(){}
 
