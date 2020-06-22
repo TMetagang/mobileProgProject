@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void navigateToDetails(MPTv tv) {
         Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
-       // myIntent.putExtra("key", value); //Optional parameters
+        myIntent.putExtra("TVkey", Injection.getGson().toJson(tv));
         MainActivity.this.startActivity(myIntent);
     }
 }
