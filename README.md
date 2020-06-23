@@ -25,18 +25,17 @@ Respected Instructions
 
 ## Functionalities:
 
-### ~~Homepage~~
-
-- ~~Welcome page~~ 
-
-- ![](https://github.com/TMetagang/mobileProgProject/blob/master/images/Capture%20d’écran%202020-06-23%20à%2019.26.34.png)
-
 The activity concerned by this homepage has not been added to the android xml file as it causes the app to crash. The above picture is that of the homepage xml file.
 
 
 ### List of all series found on the choosen API Rest
 
-![]()
+<img src="https://github.com/TMetagang/mobileProgProject/blob/master/images/Screenshot_2020-06-23-19-13-41.png" width="40%" >
+
+
+### Details of two list items
+<img src="https://github.com/TMetagang/mobileProgProject/blob/master/images/Screenshot_2020-06-23-19-13-53.png" width="40%" >
+<img src="https://github.com/TMetagang/mobileProgProject/blob/master/images/Screenshot_2020-06-23-19-21-41.png" width="40%" >
 
 
 
