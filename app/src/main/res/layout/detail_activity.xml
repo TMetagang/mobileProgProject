@@ -8,14 +8,27 @@
     tools:context=".presentation.view.MainActivity">
 
     <TextView
+        android:id="@+id/detail_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/detail_txt"
         android:text="@string/ecran_detail"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintVertical_bias="0.712" />
+
+    <ImageView
+        android:id="@+id/myImage"
+        android:layout_width="366dp"
+        android:layout_height="304dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="TODO"
+        android:src="@mipmap/ic_launcher"
+        tools:layout_editor_absoluteX="22dp"
+        tools:layout_editor_absoluteY="89dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

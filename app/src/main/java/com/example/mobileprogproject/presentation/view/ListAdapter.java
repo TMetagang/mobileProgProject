@@ -5,9 +5,11 @@ package com.example.mobileprogproject.presentation.view;
 import java.util.List;
 
 //import android.support.v7.widget.RecyclerView;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobileprogproject.presentation.model.MPTv;
 //import com.example.mobileprogproject.presentation.model.MPTv;
 import com.example.mobileprogproject.R;
+import com.squareup.picasso.Picasso;
 //import com.example.mobileprogproject.presentation.model.MPTv;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private final List<MPTv> values;
     private OnItemClickListener listener;
+    private Context context;
 
     public interface OnItemClickListener {
         void onItemClick(MPTv item);
@@ -31,12 +35,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         public TextView txtHeader;
         public TextView txtFooter;
         public View layout;
+        public ImageView imageView;
 
         public ViewHolder(View v) {
             super(v);
             layout = v;
             txtHeader = (TextView) v.findViewById(R.id.firstLine);
             txtFooter = (TextView) v.findViewById(R.id.secondLine);
+            imageView = (ImageView) v.findViewById(R.id.icon);
         }
     }
 
@@ -90,6 +96,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         });*/
 
         holder.txtFooter.setText(currentTV.getYear());
+        Picasso.get()
+                .load(currentTV.getImage())
+                .resize(500,500)
+                .into(holder.imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override public void onClick(View v){

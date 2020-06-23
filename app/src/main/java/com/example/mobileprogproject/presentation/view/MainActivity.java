@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.example.mobileprogproject.Constants;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         controller = new MainController(
                 this,
@@ -71,5 +74,6 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
         myIntent.putExtra("TVkey", Injection.getGson().toJson(tv));
         MainActivity.this.startActivity(myIntent);
+
     }
 }
